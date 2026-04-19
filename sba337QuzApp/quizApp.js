@@ -33,13 +33,14 @@ function theQuestionIs() {
     let answer = prompt(quizQuestions[currentQustnLctn].question);
 
     if (answer === null) {
+      stopQuiz = true;
       alert(
         "Quiz has been cancelled. Your score is: " +
           score +
           "/" +
           quizQuestions.length,
       );
-      stopQuiz = true;
+
       return; //stop the function if the user selects cancel
     }
 
@@ -61,8 +62,8 @@ function theQuestionIs() {
     //Add 1 to current question location of the array and go on to the next question
     currentQustnLctn++;
   } catch (error) {
-    alert("An error occurred during the quiz. Please try again.");
     stopQuiz = true; //stop the quiz if an error occurs
+    alert("An error occurred during the quiz. Please try again.");
   }
 }
 //The while loop will continue to ask each question in the array until the end of the array
@@ -72,24 +73,34 @@ let tryAgain = true;
 while (tryAgain) {
   currentQustnLctn = 0;
   score = 0;
-  stopQuiz = false;//reset all quiz variables to start the new quiz
+  stopQuiz = false; //reset all quiz variables to start the new quiz
 
-  while (currentQustnLctn < quizQuestions.length && !stopQuiz) {
+  while (currentQustnLctn < quizQuestions.length) {
+    if (stopQuiz)
+      //this flag is set to true if the user selected the cancel button during the quiz.
+      break; //This break will exit the while loop if the user clicks cancel during the quiz.
     theQuestionIs();
   }
-
-  alert(
-    "ALL DONE!! Great job, " +
-      name +
-      "! Your score is: " +
-      score +
-      "/" +
-      quizQuestions.length,
-  );
+  if (stopQuiz) {
+    //The canceled message has displayed.  No need to show the "All Done" mesage.
+  } else {
+    //quiz was not canceled by user and is completed, so show the "All Done"
+    alert(
+      "ALL DONE!! Great job, " +
+        name +
+        "! Your score is: " +
+        score +
+        "/" +
+        quizQuestions.length,
+    );
+  }
   //This code ask the user if they want to play again and resets the quiz questions and score to 0
   // if they select OK, otherwise it will end the quiz if they select cancel.
-
+  if (stopQuiz) {
+    //Canceled message has displayed.  No need to ask the user if they want to play again.
+    tryAgain = false; //This will end the outer while loop and end the quiz.
+  } else
   tryAgain = confirm(
-    "Do youu want to play again? Click OK for yes, Cancel for no",
+    "Do you want to play again? Click OK for yes, Cancel for no",
   );
 }
