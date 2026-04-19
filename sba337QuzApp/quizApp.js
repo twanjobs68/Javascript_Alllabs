@@ -72,8 +72,9 @@ let tryAgain = true;
 while (tryAgain) {
   currentQustnLctn = 0;
   score = 0;
+  stopQuiz = false;//reset all quiz variables to start the new quiz
 
-  while (currentQustnLctn < quizQuestions.length) {
+  while (currentQustnLctn < quizQuestions.length && !stopQuiz) {
     theQuestionIs();
   }
 
